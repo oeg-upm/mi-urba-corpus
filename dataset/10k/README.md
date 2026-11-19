@@ -14,19 +14,53 @@ Los tres ficheros van alineados por línea y por id. No hay imágenes: `user_pic
 
 ## Ejemplo
 
-Registro `Q0008`, una línea de cada fichero:
+Registro `Q0008`: una queja por cortes de suministro eléctrico en el patio de luces. Las tres líneas que siguen son el mismo registro en los tres ficheros.
 
-`complaints.jsonl`
+### `complaints.jsonl`
+
+| Campo | Valor |
+|---|---|
+| `id` | `Q0008`, mismo valor que `complaint_id` en los otros dos ficheros |
+| `user_text` | el texto de la queja, tal como lo escribiría un vecino |
+| `user_pics` | lista de ficheros de imagen; siempre vacía en este corpus |
+| `timestamp` | fecha sintética en formato ISO 8601 |
+
 ```json
 {"id": "Q0008", "user_text": "Hola, ¿qué tal? Quería avisaros porque aquí en la zona exterior, concretamente en el patio de luces, tenemos cortes frecuentes en el suministro eléctrico. Es importante y me preocupa, deberían revisarlo pronto. Además, se ha afectado la instalación eléctrica, concretamente el cuadro eléctrico está haciendo ruidos raros.", "user_pics": [], "timestamp": "2024-03-15T12:00:15+0000"}
 ```
 
-`ground_truth.jsonl`
+### `ground_truth.jsonl`
+
+Es la extracción de referencia: lo que el texto *dice* y el modelo debería recuperar.
+
+| Campo | Valor | Significado |
+|---|---|---|
+| `complaint_id` | `Q0008` | enlaza con la queja |
+| `extractions` | 1 elemento | un problema distinto por elemento |
+| `extractions[].category` | `electricidad` / `cortes_suministro` | categoría y subcategoría de la taxonomía |
+| `extractions[].affected_elements` | `instalación_eléctrica` / `cuadro` | objeto dañado (principal y subelemento) |
+| `extractions[].location` | `exterior` / `patio de luces` | zona de la taxonomía y detalle libre |
+| `extractions[].risks` | `[ninguno]` | riesgos asociados; `ninguno` o una lista de riesgos |
+| `extractions[].urgency` | `alta` | una de: `inmediata`, `urgente`, `alta`, `media`, `baja`, `planificable` |
+| `image_descriptions` | `[]` | reservado para descripciones de fotos; vacío |
+
 ```json
 {"complaint_id": "Q0008", "extractions": [{"category": {"principal": "electricidad", "subcategory": "cortes_suministro"}, "affected_elements": [{"principal": "instalación_eléctrica", "subcategory": "cuadro"}], "location": {"zone": "exterior", "detail": "patio de luces"}, "risks": ["ninguno"], "urgency": "alta"}], "image_descriptions": []}
 ```
 
-`metadata.jsonl`
+### `metadata.jsonl`
+
+Contexto de generación, útil para análisis y no necesario para entrenar.
+
+| Campo | Valor | Significado |
+|---|---|---|
+| `complaint_id` | `Q0008` | enlaza con la queja |
+| `persona` | `vecino_informal_amable` | perfil de escritura pedido al generador |
+| `modifier` | `null` | variante de estilo aplicada, o `null` |
+| `community` | ver línea | comunidad de vecinos simulada: id, nombre, tipo, viviendas, año, ascensor, piscina, garaje |
+| `num_pics` | `0` | número de fotos; siempre 0 |
+| `image_prompts` | `[]` | reservado para prompts de imagen; vacío |
+
 ```json
 {"complaint_id": "Q0008", "persona": "vecino_informal_amable", "modifier": null, "community": {"id": "C005", "name": "Adosados La Dehesa", "type": "adosados", "num_viviendas": 32, "year": 2015, "has_elevator": false, "has_pool": true, "has_garage": true}, "num_pics": 0, "image_prompts": []}
 ```
