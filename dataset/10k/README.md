@@ -17,7 +17,7 @@ Los tres ficheros van alineados por línea y por id. No hay imágenes: `user_pic
 | | |
 |---|---|
 | Registros | 11.276, de 13.398 intentos |
-| Problemas por registro | 1 → 9.773, 2 → 1.123, 3 → 380 |
+| Extracciones por queja | 1 → 9.773, 2 → 1.123, 3 → 380 |
 | Generadores | gemma-3-12b 2.427, qwen3.6-27b 2.997, gpt-oss-20b 2.932, muse-glimmer-30b 2.920 |
 
 ## Cómo se generó
