@@ -12,6 +12,25 @@
 
 Los tres ficheros van alineados por línea y por id. No hay imágenes: `user_pics` e `image_descriptions` van vacíos.
 
+## Ejemplo
+
+Registro `Q0008`, una línea de cada fichero:
+
+`complaints.jsonl`
+```json
+{"id": "Q0008", "user_text": "Hola, ¿qué tal? Quería avisaros porque aquí en la zona exterior, concretamente en el patio de luces, tenemos cortes frecuentes en el suministro eléctrico. Es importante y me preocupa, deberían revisarlo pronto. Además, se ha afectado la instalación eléctrica, concretamente el cuadro eléctrico está haciendo ruidos raros.", "user_pics": [], "timestamp": "2024-03-15T12:00:15+0000"}
+```
+
+`ground_truth.jsonl`
+```json
+{"complaint_id": "Q0008", "extractions": [{"category": {"principal": "electricidad", "subcategory": "cortes_suministro"}, "affected_elements": [{"principal": "instalación_eléctrica", "subcategory": "cuadro"}], "location": {"zone": "exterior", "detail": "patio de luces"}, "risks": ["ninguno"], "urgency": "alta"}], "image_descriptions": []}
+```
+
+`metadata.jsonl`
+```json
+{"complaint_id": "Q0008", "persona": "vecino_informal_amable", "modifier": null, "community": {"id": "C005", "name": "Adosados La Dehesa", "type": "adosados", "num_viviendas": 32, "year": 2015, "has_elevator": false, "has_pool": true, "has_garage": true}, "num_pics": 0, "image_prompts": []}
+```
+
 ## Cifras
 
 | | |
