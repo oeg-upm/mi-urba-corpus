@@ -1,9 +1,13 @@
 # mi-urba-corpus
 
-Herramientas para la generación sintética de un corpus de quejas de vecinos en el ámbito de la administración de fincas.
+Corpus sintéticos de quejas vecinales en español y sus extracciones de referencia.
 
 ## Datasets
 
 | Carpeta | Contenido |
 |---|---|
 | [`dataset/final_10k/`](dataset/final_10k/) | 11.276 quejas con su extracción de referencia (ground truth) |
+
+## Licencia
+
+MIT. Ver [`LICENSE`](LICENSE).
