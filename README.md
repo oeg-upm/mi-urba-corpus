@@ -6,4 +6,4 @@ Herramientas para la generación sintética de un corpus de quejas de vecinos en
 
 | Carpeta | Contenido |
 |---|---|
-| [`dataset/10k/`](dataset/10k/) | 11.276 quejas con su extracción de referencia (ground truth) |
+| [`dataset/final_10k/`](dataset/final_10k/) | 11.276 quejas con su extracción de referencia (ground truth) |
