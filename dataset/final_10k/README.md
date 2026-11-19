@@ -1,4 +1,4 @@
-# 10K — corpus de quejas vecinales en español
+# final_10k — corpus de quejas vecinales en español
 
 11.276 registros de quejas de vecinos de una comunidad de propietarios.
 
