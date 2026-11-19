@@ -73,21 +73,10 @@ Contexto de generación, útil para analizar el corpus y no necesario para entre
 
 | | |
 |---|---|
-| Registros | 10.983 (tras la purga de #5), de 13.398 intentos de generación |
+| Registros | 10.983, de 13.398 intentos |
 | Extracciones por queja | 1 → 9.543, 2 → 1.085, 3 → 355 |
 | Generadores | gemma-3-12b 2.356, qwen3.6-27b 2.922, gpt-oss-20b 2.855, muse-glimmer-30b 2.850 |
 
 ## Cómo se generó
 
 Con [mi-urba](https://github.com/oeg-upm/mi-urba). El escenario se muestrea de una taxonomía cerrada y el texto lo escribe uno de cuatro LLM locales. Cada registro pasa por un juez LLM (gemma4-12b) que lo rechaza y pide reescritura si no respeta el escenario. Los timestamps son sintéticos (2024–2026).
-
-## Historial
-
-- Generación original: 11.276 registros.
-- **Purga (PR #5)**: se eliminaron 293 registros — 289 con `risks` contradictorio (`ninguno` junto a un riesgo real), 2 con timestamp vacío y 2 con texto duplicado — dejando los 10.983 actuales.
-
-## Limitaciones conocidas
-
-- El texto lo escribe un modelo: puede contener fórmulas raras o detalles inverosímiles. No es lenguaje de usuarios reales.
-- Los 11.276 registros generados producían 6.263 escenarios distintos tras la purga: la mayoría de los registros comparten su anotación con otro (grupos de hasta 15). Para entrenar, hacer splits agrupados por escenario, no aleatorios.
-- Las clases pequeñas están poco representadas (p. ej. `trasteros` con 12 problemas, `varios` con 110 registros).
