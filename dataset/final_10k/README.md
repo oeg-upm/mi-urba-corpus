@@ -1,6 +1,6 @@
 # final_10k — corpus de quejas vecinales en español
 
-11.276 registros de quejas de vecinos de una comunidad de propietarios.
+11.0 83 registros de quejas de vecinos de una comunidad de propietarios.
 
 ## Ficheros
 
@@ -43,7 +43,7 @@ Es la extracción esperada: lo que el texto *dice* y un extractor debería recup
 | `extractions` | 1 elemento | un problema distinto por elemento |
 | `extractions[].category` | `electricidad` / `cortes_suministro` | categoría y subcategoría de la taxonomía |
 | `extractions[].affected_elements` | `instalación_eléctrica` / `cuadro` | objeto dañado (principal y subelemento) |
-| `extractions[].location` | `exterior` / `patio de luces` | zona de la taxonomía y detalle libre |
+| `extractions[].location` | `exterior` / `patio de luces` | zona de la taxonomía y detalle propio de esa zona (vocabulario cerrado) |
 | `extractions[].risks` | `[ninguno]` | riesgos asociados; `ninguno` o una lista de riesgos |
 | `extractions[].urgency` | `alta` | una de: `inmediata`, `urgente`, `alta`, `media`, `baja`, `planificable` |
 | `image_descriptions` | `[]` | reservado para descripciones de fotos; vacío |
@@ -73,15 +73,21 @@ Contexto de generación, útil para analizar el corpus y no necesario para entre
 
 | | |
 |---|---|
-| Registros | 11.276, de 13.398 intentos |
-| Extracciones por queja | 1 → 9.773, 2 → 1.123, 3 → 380 |
-| Generadores | gemma-3-12b 2.427, qwen3.6-27b 2.997, gpt-oss-20b 2.932, muse-glimmer-30b 2.920 |
+| Registros | 10.983 (tras la purga de #5), de 13.398 intentos de generación |
+| Extracciones por queja | 1 → 9.543, 2 → 1.085, 3 → 355 |
+| Generadores | gemma-3-12b 2.356, qwen3.6-27b 2.922, gpt-oss-20b 2.855, muse-glimmer-30b 2.850 |
 
 ## Cómo se generó
 
-Con [mi-urba](https://github.com/oeg-upm/mi-urba). El escenario se muestrea de una taxonomía cerrada y el texto lo escribe uno de cuatro LLM locales. Cada registro pasa por un juez LLM (gemma4-12b) que lo rechaza y pide reescritura si no respeta el escenario. Los timestamps son sintéticos (marzo de 2024).
+Con [mi-urba](https://github.com/oeg-upm/mi-urba). El escenario se muestrea de una taxonomía cerrada y el texto lo escribe uno de cuatro LLM locales. Cada registro pasa por un juez LLM (gemma4-12b) que lo rechaza y pide reescritura si no respeta el escenario. Los timestamps son sintéticos (2024–2026).
+
+## Historial
+
+- Generación original: 11.276 registros.
+- **Purga (PR #5)**: se eliminaron 293 registros — 289 con `risks` contradictorio (`ninguno` junto a un riesgo real), 2 con timestamp vacío y 2 con texto duplicado — dejando los 10.983 actuales.
 
 ## Limitaciones conocidas
 
-- 289 registros (2,6 %) tienen un escenario contradictorio en `risks`: `ninguno` junto a un riesgo concreto. El muestreo ya está corregido, pero estos se generaron antes.
 - El texto lo escribe un modelo: puede contener fórmulas raras o detalles inverosímiles. No es lenguaje de usuarios reales.
+- Los 11.276 registros generados producían 6.263 escenarios distintos tras la purga: la mayoría de los registros comparten su anotación con otro (grupos de hasta 15). Para entrenar, hacer splits agrupados por escenario, no aleatorios.
+- Las clases pequeñas están poco representadas (p. ej. `trasteros` con 12 problemas, `varios` con 110 registros).
