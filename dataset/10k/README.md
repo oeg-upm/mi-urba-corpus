@@ -14,14 +14,18 @@ Los tres ficheros van alineados por línea y por id. No hay imágenes: `user_pic
 
 ## Ejemplo
 
-Registro `Q0008`: una queja por cortes de suministro eléctrico en el patio de luces. Las tres líneas que siguen son el mismo registro en los tres ficheros.
+Registro `Q0008`. Lo relevante es el texto: es la **entrada** del corpus. Lo demás es la referencia que debería recuperarse (`ground_truth`) y el contexto de generación (`metadata`).
 
-### `complaints.jsonl`
+> Hola, ¿qué tal? Quería avisaros porque aquí en la zona exterior, concretamente en el patio de luces, tenemos cortes frecuentes en el suministro eléctrico. Es importante y me preocupa, deberían revisarlo pronto. Además, se ha afectado la instalación eléctrica, concretamente el cuadro eléctrico está haciendo ruidos raros.
+
+La tarea asociada: dado ese `user_text`, producir las `extractions` de `ground_truth.jsonl`.
+
+### La entrada: `complaints.jsonl`
 
 | Campo | Valor |
 |---|---|
+| **`user_text`** | **el texto de la queja; es lo que se usa como entrada** |
 | `id` | `Q0008`, mismo valor que `complaint_id` en los otros dos ficheros |
-| `user_text` | el texto de la queja, tal como lo escribiría un vecino |
 | `user_pics` | lista de ficheros de imagen; siempre vacía en este corpus |
 | `timestamp` | fecha sintética en formato ISO 8601 |
 
@@ -29,9 +33,9 @@ Registro `Q0008`: una queja por cortes de suministro eléctrico en el patio de l
 {"id": "Q0008", "user_text": "Hola, ¿qué tal? Quería avisaros porque aquí en la zona exterior, concretamente en el patio de luces, tenemos cortes frecuentes en el suministro eléctrico. Es importante y me preocupa, deberían revisarlo pronto. Además, se ha afectado la instalación eléctrica, concretamente el cuadro eléctrico está haciendo ruidos raros.", "user_pics": [], "timestamp": "2024-03-15T12:00:15+0000"}
 ```
 
-### `ground_truth.jsonl`
+### La referencia: `ground_truth.jsonl`
 
-Es la extracción de referencia: lo que el texto *dice* y el modelo debería recuperar.
+Es la extracción esperada: lo que el texto *dice* y un extractor debería recuperar.
 
 | Campo | Valor | Significado |
 |---|---|---|
@@ -48,9 +52,9 @@ Es la extracción de referencia: lo que el texto *dice* y el modelo debería rec
 {"complaint_id": "Q0008", "extractions": [{"category": {"principal": "electricidad", "subcategory": "cortes_suministro"}, "affected_elements": [{"principal": "instalación_eléctrica", "subcategory": "cuadro"}], "location": {"zone": "exterior", "detail": "patio de luces"}, "risks": ["ninguno"], "urgency": "alta"}], "image_descriptions": []}
 ```
 
-### `metadata.jsonl`
+### El contexto: `metadata.jsonl`
 
-Contexto de generación, útil para análisis y no necesario para entrenar.
+Contexto de generación, útil para analizar el corpus y no necesario para entrenar.
 
 | Campo | Valor | Significado |
 |---|---|---|
