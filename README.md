@@ -14,16 +14,6 @@ tags:
   - property-management
 size_categories:
   - 10K<n<100K
-configs:
-  - config_name: records
-    data_files: dataset/final_10k/parquet/records.parquet
-    default: true
-  - config_name: complaints
-    data_files: dataset/final_10k/parquet/complaints.parquet
-  - config_name: ground_truth
-    data_files: dataset/final_10k/parquet/ground_truth.parquet
-  - config_name: metadata
-    data_files: dataset/final_10k/parquet/metadata.parquet
 ---
 
 # mi-urba-corpus
