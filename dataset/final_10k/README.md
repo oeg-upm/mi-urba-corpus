@@ -12,6 +12,26 @@
 
 Los tres ficheros van alineados por línea y por id. No hay imágenes: `user_pics` ya no forma parte del registro y `num_pics`/`image_prompts`/`image_descriptions` quedan vacíos, reservados para una futura extensión multimodal.
 
+## Formatos
+
+| Formato | Ficheros |
+|---|---|
+| JSONL (canónico) | `complaints.jsonl`, `ground_truth.jsonl`, `metadata.jsonl` |
+| Parquet (HuggingFace) | `parquet/complaints.parquet`, `parquet/ground_truth.parquet`, `parquet/metadata.parquet`, `parquet/records.parquet` |
+
+Los Parquet se generan a partir de los JSONL y son idénticos registro a registro (mismos campos, mismo orden de
+registros, tipos anidados preservados: `community` como struct y `extractions` como lista de structs).
+
+`parquet/records.parquet` es una vista unida por identificador, una fila por queja, con `id`, `user_text`,
+`timestamp`, `model`, `persona`, `modifier`, `community` y `extractions`: es la configuración que carga por defecto
+`load_dataset` y la más cómoda para entrenar o evaluar un clasificador.
+
+```python
+from datasets import load_dataset
+
+ds = load_dataset("parquet", data_files="parquet/records.parquet")
+```
+
 El generador de cada registro se identifica en `metadata.jsonl`, no en `complaints.jsonl`: el texto de la queja es la entrada del corpus y no debe arrastrar la procedencia de generación.
 
 ## Ejemplo
