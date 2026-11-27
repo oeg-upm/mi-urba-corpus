@@ -10,7 +10,7 @@
 | `ground_truth.jsonl` | la extracción de referencia, por `complaint_id`: lista `extractions` con `category`, `affected_elements`, `location`, `risks` y `urgency` |
 | `metadata.jsonl` | `complaint_id`, `community`, `persona`, `modifier`, `num_pics`, `image_prompts` |
 
-Los tres ficheros van alineados por línea y por id. No hay imágenes: `user_pics` e `image_descriptions` van vacíos. El formato es el mismo que el de [`final_10k`](../../final_10k/).
+Los tres ficheros van alineados por línea y por id. No hay imágenes: `user_pics` e `image_descriptions` van vacíos. Una diferencia con [`final_10k`](../../final_10k/): aquí `complaints.jsonl` conserva el campo `user_pics` (siempre vacío) y `metadata.jsonl` no incluye el campo `model`.
 
 ## Cifras
 
@@ -27,7 +27,7 @@ Con [mi-urba](https://github.com/oeg-upm/mi-urba), antes de la versión que prod
 ## Problemas
 
 - **Sin auditoría independiente**: no pasó por el panel de 6 votos, así que no hay medida de su calidad.
-- **95 extracciones (2,1 %) con `ninguno` junto a un riesgo concreto**, del fallo de muestreo ya corregido en el generador.
+- **95 extracciones (2,1 % de las extracciones) con `ninguno` junto a un riesgo concreto**, del fallo de muestreo ya corregido en el generador.
 - **Un generador arrastra el conjunto**: olmo-3.1-32b aporta solo 174 registros, con 1.303 rechazos sobre 1.477 intentos (12 % de aceptación).
 - **Los ids coinciden con los de `final_10k`**: los dos empiezan en `Q0001`.
 - El texto lo escribe un modelo: puede contener fórmulas raras o detalles inverosímiles. No es lenguaje de usuarios reales.
