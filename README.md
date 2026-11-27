@@ -52,7 +52,7 @@ ds = load_dataset("parquet", data_files="dataset/final_10k/parquet/records.parqu
 | `ground_truth` | anotación de referencia: `complaint_id`, `extractions`, `image_descriptions` | 10.983 |
 | `metadata` | contexto de generación: `complaint_id`, `persona`, `modifier`, `community`, `model`, `num_pics`, `image_prompts` | 10.983 |
 
-Las tres primeras se entregan también como JSONL en [`dataset/final_10k/`](dataset/final_10k/), que es la fuente
+Los tres ficheros por registro se entregan también como JSONL en [`dataset/final_10k/`](dataset/final_10k/), que es la fuente
 canónica: los Parquet se generan a partir de ellos y son idénticos registro a registro.
 
 ## Datasets
@@ -67,8 +67,8 @@ gemma-3-12b-awq (2.356), qwen3.6-27b-awq (2.922), muse-glimmer-30b-awq (2.850) y
 
 ## Evaluación
 
-Ver [`evaluation/`](evaluation/): fidelidad del generador al escenario (juez LLM, rúbrica de dos niveles, 10.983
-registros completos).
+Pendiente de publicación en este repositorio: protocolo y resultados de la auditoría de fidelidad del generador al
+escenario (juez LLM, rúbrica de dos niveles, 10.983 registros completos).
 
 ## Licencia
 
