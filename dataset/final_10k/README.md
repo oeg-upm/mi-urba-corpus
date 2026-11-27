@@ -1,16 +1,18 @@
 # final_10k — corpus de quejas vecinales en español
 
-11.0 83 registros de quejas de vecinos de una comunidad de propietarios.
+10.983 registros de quejas de vecinos de una comunidad de propietarios.
 
 ## Ficheros
 
 | Fichero | Contenido |
 |---|---|
-| `complaints.jsonl` | la queja: `id`, `user_text`, `user_pics`, `timestamp` |
+| `complaints.jsonl` | la queja: `id`, `user_text`, `timestamp` |
 | `ground_truth.jsonl` | la extracción de referencia, por `complaint_id`: lista `extractions` con `category`, `affected_elements`, `location`, `risks` y `urgency` |
-| `metadata.jsonl` | `complaint_id`, `community`, `persona`, `modifier`, `num_pics`, `image_prompts` |
+| `metadata.jsonl` | `complaint_id`, `persona`, `modifier`, `community`, `num_pics`, `image_prompts`, `model` |
 
-Los tres ficheros van alineados por línea y por id. No hay imágenes: `user_pics` e `image_descriptions` van vacíos.
+Los tres ficheros van alineados por línea y por id. No hay imágenes: `user_pics` ya no forma parte del registro y `num_pics`/`image_prompts`/`image_descriptions` quedan vacíos, reservados para una futura extensión multimodal.
+
+El generador de cada registro se identifica en `metadata.jsonl`, no en `complaints.jsonl`: el texto de la queja es la entrada del corpus y no debe arrastrar la procedencia de generación.
 
 ## Ejemplo
 
@@ -26,11 +28,10 @@ La tarea asociada: dado ese `user_text`, producir las `extractions` de `ground_t
 |---|---|
 | **`user_text`** | **el texto de la queja; es lo que se usa como entrada** |
 | `id` | `Q0008`, mismo valor que `complaint_id` en los otros dos ficheros |
-| `user_pics` | lista de ficheros de imagen; siempre vacía en este corpus |
 | `timestamp` | fecha sintética en formato ISO 8601 |
 
 ```json
-{"id": "Q0008", "user_text": "Hola, ¿qué tal? Quería avisaros porque aquí en la zona exterior, concretamente en el patio de luces, tenemos cortes frecuentes en el suministro eléctrico. Es importante y me preocupa, deberían revisarlo pronto. Además, se ha afectado la instalación eléctrica, concretamente el cuadro eléctrico está haciendo ruidos raros.", "user_pics": [], "timestamp": "2024-03-15T12:00:15+0000"}
+{"id": "Q0008", "user_text": "Hola, ¿qué tal? Quería avisaros porque aquí en la zona exterior, concretamente en el patio de luces, tenemos cortes frecuentes en el suministro eléctrico. Es importante y me preocupa, deberían revisarlo pronto. Además, se ha afectado la instalación eléctrica, concretamente el cuadro eléctrico está haciendo ruidos raros.", "timestamp": "2024-03-15T12:00:15+0000"}
 ```
 
 ### La referencia: `ground_truth.jsonl`
@@ -62,11 +63,12 @@ Contexto de generación, útil para analizar el corpus y no necesario para entre
 | `persona` | `vecino_informal_amable` | perfil de escritura pedido al generador |
 | `modifier` | `null` | variante de estilo aplicada, o `null` |
 | `community` | ver línea | comunidad de vecinos simulada: id, nombre, tipo, viviendas, año, ascensor, piscina, garaje |
+| `model` | `gemma-3-12b-awq` | **modelo generador del texto** |
 | `num_pics` | `0` | número de fotos; siempre 0 |
 | `image_prompts` | `[]` | reservado para prompts de imagen; vacío |
 
 ```json
-{"complaint_id": "Q0008", "persona": "vecino_informal_amable", "modifier": null, "community": {"id": "C005", "name": "Adosados La Dehesa", "type": "adosados", "num_viviendas": 32, "year": 2015, "has_elevator": false, "has_pool": true, "has_garage": true}, "num_pics": 0, "image_prompts": []}
+{"complaint_id": "Q0008", "persona": "vecino_informal_amable", "modifier": null, "community": {"id": "C005", "name": "Adosados La Dehesa", "type": "adosados", "num_viviendas": 32, "year": 2015, "has_elevator": false, "has_pool": true, "has_garage": true}, "num_pics": 0, "image_prompts": [], "model": "gemma-3-12b-awq"}
 ```
 
 ## Cifras
@@ -75,7 +77,9 @@ Contexto de generación, útil para analizar el corpus y no necesario para entre
 |---|---|
 | Registros | 10.983, de 13.398 intentos |
 | Extracciones por queja | 1 → 9.543, 2 → 1.085, 3 → 355 |
-| Generadores | gemma-3-12b 2.356, qwen3.6-27b 2.922, gpt-oss-20b 2.855, muse-glimmer-30b 2.850 |
+| Generadores | gemma-3-12b-awq 2.356, qwen3.6-27b-awq 2.922, muse-glimmer-30b-awq 2.850, gpt-oss-20b 2.855 |
+
+Cada generador ocupa un bloque contiguo de identificadores (`gemma` hasta `Q3000`, `qwen3.6` hasta `Q6000`, `muse-glimmer` hasta `Q9000`, `gpt-oss` en adelante), pero el campo `model` de `metadata.jsonl` es la fuente de verdad: los bloques no están completos porque los registros rechazados por el juez no se publicaron.
 
 ## Cómo se generó
 
